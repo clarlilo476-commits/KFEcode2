@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="night">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10141b">
+  <meta name="description" content="KFEcode — IDE para HTML, CSS e JavaScript.">
+  <title>KFEcode — Editor de projetos web</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/vendor/xterm.css">
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="titlebar-start">
+        <div class="window-controls" aria-label="Controles da janela">
+          <button class="window-control window-close" data-action="preview-toggle" data-icon="x" title="Mostrar ou ocultar prévia" aria-label="Mostrar ou ocultar prévia"></button>
+          <button class="window-control window-minimize" data-action="bottom-toggle" title="Mostrar ou recolher painel inferior" aria-label="Mostrar ou recolher painel inferior"><span>−</span></button>
+          <button class="window-control window-zoom" data-action="focus-mode" data-icon="expand" title="Modo foco" aria-label="Modo foco" aria-pressed="false"></button>
+        </div>
+        <a class="brand" href="./" aria-label="KFEcode"><img src="assets/mark.svg" alt=""><span>KFE<span>code</span></span></a>
+        <div class="top-divider"></div>
+        <button class="workspace-button" data-action="workspaces" id="workspace-button" aria-label="Workspaces e projetos"></button>
+      </div>
+      <button class="command-trigger" data-action="palette"><span data-icon="search"></span><span>Buscar arquivo ou comando…</span><kbd data-shortcut="palette">Ctrl K</kbd></button>
+      <div class="top-actions">
+        <button class="shortcut-trigger" data-action="shortcuts" title="Códigos e atalhos" aria-label="Códigos e atalhos"><span data-icon="keyboard"></span><span>Atalhos</span></button>
+        <div class="top-divider actions-divider"></div>
+        <button class="top-icon" data-action="save" data-icon="save" title="Salvar arquivo" aria-label="Salvar arquivo"></button>
+        <button class="run-button" data-action="run"><span data-icon="play"></span><span>Executar</span><kbd data-shortcut="run">F5</kbd></button>
+        <button class="top-icon preview-toggle-button" data-action="preview-toggle" data-icon="panel" title="Alternar prévia" aria-label="Alternar prévia"></button>
+      </div>
+    </header>
+    <div class="workspace">
+      <nav class="activity" aria-label="Ferramentas da IDE">
+        <div class="activity-top">
+          <button data-pane="files" data-icon="files" title="Explorador" aria-label="Explorador"></button>
+          <button data-pane="search" data-icon="search" title="Busca global" aria-label="Busca global"></button>
+          <button data-pane="git" data-icon="branch" title="Controle de versão" aria-label="Controle de versão"></button>
+          <button data-pane="debug" data-icon="bug" title="Depuração" aria-label="Depuração"></button>
+          <button data-pane="extensions" data-icon="extensions" title="Extensões" aria-label="Extensões"></button>
+        </div>
+        <div class="activity-bottom">
+          <button data-pane="settings" data-icon="settings" title="Configurações" aria-label="Configurações"></button>
+        </div>
+      </nav>
+      <aside id="sidebar" class="sidebar" aria-label="Painel lateral"></aside>
+      <main id="editor-area" class="editor-area">
+        <div class="tabbar"><div class="tabs" id="tabs" role="tablist" aria-label="Arquivos abertos"></div><div class="editor-tools">
+          <button data-action="split" data-icon="split" title="Dividir editor" aria-label="Dividir editor"></button>
+          <button data-action="editor-menu" data-icon="more" title="Mais ações" aria-label="Mais ações"></button>
+        </div></div>
+        <div class="breadcrumb" id="breadcrumb"></div>
+        <div class="editors" id="editors">
+          <div class="editor-pane" id="editor-primary"><div class="editor-loading">Carregando editor…</div></div>
+          <div class="editor-pane" id="editor-secondary" hidden></div>
+        </div>
+        <section class="bottom-panel" id="bottom-panel" aria-label="Saída e ferramentas">
+          <div class="bottom-bar"><div class="bottom-tabs" id="bottom-tabs"></div><div class="bottom-tools" id="bottom-tools"></div></div>
+          <div class="bottom-content" id="bottom-content"></div>
+        </section>
+      </main>
+      <aside class="preview-panel" id="preview-panel" aria-label="Prévia ao vivo">
+        <div class="preview-heading"><span data-icon="monitor"></span><strong>Prévia ao vivo</strong><span class="live-indicator" id="preview-state"><i></i> Pronta</span><span class="preview-heading-spacer"></span><button data-action="preview-open" data-icon="external" title="Abrir prévia em nova janela" aria-label="Abrir prévia em nova janela"></button><button data-action="preview-toggle" data-icon="x" title="Fechar prévia" aria-label="Fechar prévia"></button></div>
+        <div class="preview-browser"><button data-action="run" data-icon="refresh" title="Recarregar prévia" aria-label="Recarregar prévia"></button><div class="address"><span data-icon="globe"></span><span id="preview-path">/index.html</span></div><button data-action="device" data-icon="smartphone" title="Alternar modo responsivo" aria-label="Alternar modo responsivo"></button></div>
+        <div class="viewport" id="viewport"><iframe id="preview" title="Resultado do projeto" sandbox="allow-scripts allow-forms allow-modals"></iframe></div>
+        <div class="preview-footer"><span><i></i> <span id="preview-mode">Desktop</span></span><span id="viewport-size"></span></div>
+      </aside>
+    </div>
+    <footer class="statusbar" id="statusbar"></footer>
+  </div>
+  <dialog id="dialog"></dialog>
+  <div id="popover" class="popover" hidden></div>
+  <div id="toasts" role="status" aria-live="polite"></div>
+  <input id="file-import" type="file" multiple hidden>
+  <input id="folder-import" type="file" webkitdirectory multiple hidden>
+  <input id="extension-import" type="file" accept=".vsix,.json,.zip" hidden>
+  <script src="assets/vendor/monaco/vs/loader.js" defer></script>
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

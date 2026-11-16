@@ -1,0 +1,26 @@
+{
+  "name": "utilitarios-web",
+  "publisher": "comunidade",
+  "displayName": "Utilitários web",
+  "version": "1.0.0",
+  "description": "Adiciona um snippet e um comando de inserção ao editor HTML.",
+  "kfecode": {
+    "snippets": {
+      "html": {
+        "Seção acessível": {
+          "prefix": "secao-kfe",
+          "body": ["<section aria-labelledby=\"titulo\">", "  <h2 id=\"titulo\">${1:Título}</h2>", "  $0", "</section>"],
+          "description": "Insere uma seção com título associado."
+        }
+      }
+    },
+    "commands": [
+      {
+        "label": "Inserir seção HTML",
+        "action": "insertText",
+        "language": "html",
+        "text": "<section>\n  <h2>Nova seção</h2>\n</section>"
+      }
+    ]
+  }
+}
